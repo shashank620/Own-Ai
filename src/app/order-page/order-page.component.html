@@ -1,0 +1,269 @@
+<div>
+    <h4>Purchase Order | New</h4>
+</div>
+
+<!-- 1st row -->
+<form action="#" class="frm" [formGroup]="registration" (ngSubmit)="onSubmit()">
+    <div class="container mt-3 maincontainer">
+        <div class="row">
+            <div class="col">
+                <label for="clientName">Client Name <span style="color: red; font-weight: bold;"
+                        *ngIf="registration.get('clientName')?.invalid && registration.get('clientName')?.touched">
+                        <span *ngIf="registration.get('clientName')?.errors">*</span>
+                    </span></label>
+                <select class="form-select mt-2" id="clientName" formControlName="clientName">
+                    <option *ngFor="let client of clientName" [value]="client">{{client}}</option>
+                </select>
+            </div>
+
+            <div class="col">
+                <label for="PurchaseOrderType">Purchase Order Type <span style="color: red; font-weight: bold;"
+                        *ngIf="registration.get('PurchaseOrderType')?.invalid && registration.get('PurchaseOrderType')?.touched">
+                        <span *ngIf="registration.get('PurchaseOrderType')?.errors">*</span>
+                    </span></label>
+                <select class="form-select mt-2" id="PurchaseOrderType" formControlName="PurchaseOrderType"
+                    (change)="onPOTypeChange()">
+                    <option value="Group PO">Group PO</option>
+                    <option value="Individual PO">Individual PO</option>
+
+                </select>
+            </div>
+
+            <div class="col">
+                <label for="num">Purchase Order No. <span style="color: red; font-weight: bold;"
+                        *ngIf="registration.get('num')?.invalid && registration.get('num')?.touched">
+                        <span *ngIf="registration.get('num')?.errors">*</span>
+                    </span></label>
+                <input class="form-control mt-2" type="text" placeholder="PO Number" id="num" formControlName="num">
+            </div>
+
+            <div class="col">
+                <label for="rec">Recieved On <span style="color: red; font-weight: bold;"
+                        *ngIf="registration.get('rec')?.invalid && registration.get('rec')?.touched">
+                        <span *ngIf="registration.get('rec')?.errors">*</span>
+                    </span></label>
+                <div class="container mt-2">
+                    <input type="date" class="form-control" id="rec" formControlName="rec">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 2nd row -->
+        <div class="row mt-4">
+            <div class="col col-lg-3 col-sm-3 col-md-3">
+                <label for="recfrom">Recieved From <span style="color: red; font-weight: bold;"
+                        *ngIf="registration.get('recfrom')?.invalid && registration.get('recfrom')?.touched">
+                        <span *ngIf="registration.get('recfrom')?.errors">*</span>
+                    </span></label>
+                <input class="form-control mt-2" type="text" placeholder="Recieved From Name" id="recfrom"
+                    formControlName="recfrom">
+            </div>
+
+            <div class="col col-lg-3 col-sm-3 col-md-3">
+                <label></label>
+                <input type="email" class="form-control mt-2" type="text" placeholder="Recieved From Mail Id"
+                    formControlName="eml">
+            </div>
+
+            <!-- --------- -->
+            <div class="col">
+                <label for="pos">PO Start Date <span style="color: red; font-weight: bold;"
+                        *ngIf="registration.get('pos')?.invalid && registration.get('pos')?.touched">
+                        <span *ngIf="registration.get('pos')?.errors">*</span>
+                    </span></label>
+                <input type="date" class="form-control mt-2" id="pos" placeholder="PO Start Date" formControlName="pos">
+            </div>
+
+            <div class="col">
+                <label for="poe">PO End Date <span style="color: red; font-weight: bold;"
+                        *ngIf="registration.get('poe')?.invalid && registration.get('poe')?.touched">
+                        <span *ngIf="registration.get('poe')?.errors">*</span>
+                    </span></label>
+                <input type="date" class="form-control mt-2" id="poe" placeholder="PO End Date" formControlName="poe">
+            </div>
+
+            <div class="col">
+                <label for="bud">Budget <span style="color: red; font-weight: bold;"
+                        *ngIf="registration.get('bud')?.invalid && registration.get('bud')?.touched">
+                        <span *ngIf="registration.get('bud')?.errors">*</span>
+                    </span></label>
+                <input type="number" class="form-control mt-2" id="bud" placeholder="Budget" formControlName="bud">
+            </div>
+
+            <div class="col">
+                <label for="curr">Currency <span style="color: red; font-weight: bold;"
+                        *ngIf="registration.get('curr')?.invalid && registration.get('curr')?.touched">
+                        <span *ngIf="registration.get('curr')?.errors">*</span>
+                    </span></label>
+                <select id="curr" class="form-control mt-2" formControlName="curr">
+                    <option *ngFor="let currency of currencies" [value]="currency">{{currency}}</option>
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div class="row mt-4 talent">
+            <div class="col col-lg-10 det">
+                <h5>Talent Detail</h5>
+            </div>
+
+            <div class="col col-lg-2">
+                <button type="button" class="btn btn-light addbtn" (click)="addAnotherREQ()" *ngIf="canAddAnotherREQ">+
+                    Add Another</button>
+            </div>
+        </div>
+
+        <!-- 3rd row -->
+        <div class="row mt-3" formArrayName="talentDetails">
+            <div class="" *ngFor="let talent of talentDetails.controls; let i=index" [formGroupName]="i">
+                <div class="d-flex space">
+                    <div class="col-lg-4 mt-4">
+                        <label for="jobTitle">Job Title/REQ Name <span style="color: red; font-weight: bold;"
+                                *ngIf="registration.get('jobTitle')?.invalid && registration.get('jobTitle')?.touched">
+                                <span *ngIf="registration.get('jobTitle')?.errors">*</span>
+                            </span></label>
+                        <select class="form-select mt-2" id="jobTitles" formControlName="jobTitle"
+                            (change)="onJobTitleChange(i)" [(ngModel)]="selectedValue">
+                            <option *ngFor="let job of jobTitles" [value]="job">{{job}}</option>
+                        </select>
+                    </div>
+
+
+
+                    <div class="col col-lg-3 mt-4">
+                        <label for="jobid">Job ID/REQ ID</label>
+                        <input type="text" id="jobid" class="form-control mt-2" formControlName="jobid" readonly>
+                    </div>
+
+                    <!-- icon -->
+                    <div class="col col-lg-4 col-sm-4 col-md-4 icn text-end">
+                        <img (click)="removeForm(i)" class="p-2" src="../../assets/trash.svg" alt="">
+                        <img class="p-2" src="../../assets/file-minus.svg" alt="">
+                    </div>
+
+                </div>
+
+                <!-- line -->
+                <hr>
+
+                <!-- Display talents associated with the job -->
+
+                <div class="row mt-2">
+                    <div class="form-check col col-lg-12 col-sm-12 col-md-12 mb-2">
+                        <input class="form-check-input" type="checkbox" value="checkbox1" id="checkbox1">
+                        <label for="checkbox1" class="form-check-label">Job 1</label>
+                    </div>
+
+                    <div class="col col-lg-3 col-sm-3 col-md-3 mb-5">
+                        <label for="contact1">Contact Duration</label>
+                        <input class="form-control mt-2" type="text" placeholder="Contact Duration" id="contact1">
+                    </div>
+
+                    <div class="col">
+                        <label>Bill Rate</label>
+                        <input type="text" class="form-control mt-2" type="text" placeholder="Bill Rate">
+                    </div>
+
+                    <div class="col">
+                        <label for="curr2">Currency</label>
+                        <select id="curr2" class="form-control mt-2">
+                            <option *ngFor="let currency of currencies" [value]="currency">{{currency}}</option>
+                        </select>
+                    </div>
+
+                    <div class="col">
+                        <label>Standard Time BR</label>
+                        <input type="time" class="form-control mt-2" placeholder="Standard Time BR/hr">
+                    </div>
+
+
+                    <div class="col">
+                        <label for="curr3">Currency</label>
+                        <select id="curr3" class="form-control mt-2">
+                            <option *ngFor="let currency of currencies" [value]="currency">{{currency}}</option>
+                        </select>
+                    </div>
+
+                    <div class="col">
+                        <label>Over Time BR</label>
+                        <input type="time" class="form-control mt-2" placeholder="Over Time BR">
+                    </div>
+
+                    <div class="col">
+                        <label for="curr4">Currency</label>
+                        <select id="curr4" class="form-control mt-2">
+                            <option *ngFor="let currency of currencies" [value]="currency">{{currency}}</option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+                <!-- 2nd -->
+                <div *ngIf="secondDetail">
+                    <div class="row mt-2">
+                        <div class="form-check col col-lg-12 col-sm-12 col-md-12 mb-2">
+                            <input class="form-check-input" type="checkbox" value="checkbox2" id="checkbox2">
+                            <label for="checkbox2" class="form-check-label">Job 2</label>
+                        </div>
+
+                        <div class="col col-lg-3 col-sm-3 col-md-3 mb-5">
+                            <label for="contact1">Contact Duration</label>
+                            <input class="form-control mt-2" type="text" placeholder="Contact Duration" id="contact1">
+                        </div>
+
+                        <div class="col">
+                            <label>Bill Rate</label>
+                            <input type="text" class="form-control mt-2" type="text" placeholder="Bill Rate">
+                        </div>
+
+                        <div class="col">
+                            <label for="curr2">Currency</label>
+                            <select id="curr2" class="form-control mt-2">
+                                <option *ngFor="let currency of currencies" [value]="currency">{{currency}}</option>
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <label>Standard Time BR</label>
+                            <input type="time" class="form-control mt-2" placeholder="Standard Time BR/hr">
+                        </div>
+
+
+                        <div class="col">
+                            <label for="curr3">Currency</label>
+                            <select id="curr3" class="form-control mt-2">
+                                <option *ngFor="let currency of currencies" [value]="currency">{{currency}}</option>
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <label>Over Time BR</label>
+                            <input type="time" class="form-control mt-2" placeholder="Over Time BR">
+                        </div>
+
+                        <div class="col">
+                            <label for="curr4">Currency</label>
+                            <select id="curr4" class="form-control mt-2">
+                                <option *ngFor="let currency of currencies" [value]="currency">{{currency}}</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container control mt-4">
+        <button type="submit" class="btn btn-light text-end reset">Submit</button>
+        <button type="button" class="btn btn-light text-end reset" (click)="saveDetail()"
+            [disabled]="hideSave">Save</button>
+        <button type="button" class="btn btn-light text-end reset" (click)="resetDetail()">Reset</button>
+    </div>
+</form>
